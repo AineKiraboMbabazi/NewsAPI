@@ -2,6 +2,7 @@ import requests
 import inquirer
 import textwrap
 import os
+import texttable as tt
 from inquirer.themes import GreenPassion
 
 
@@ -19,26 +20,31 @@ class NewsApi:
         ]
         # theme adds a green background to the items in the list
         answers = inquirer.prompt(questions, theme=GreenPassion())
-        print(answers['sources'])
+        print("News Source : ", answers['sources'])
 
         return answers['sources']
     # function to retrieve a product key for the environment variable
 
-    def add_api_key(self):
-        if('API_KEY' in os.environ) == False:
-            raise ValueError(
-                "Access Denied ..., you dont have a product key in your environment variables")
+    def get_api_key(self):
+        try:
+            os.environ.get('API_KEY')
+        except Exception:
+
+            if 'API_KEY' not in os.environ:
+                print(
+                    "Access Denied ..., you dont have a key in your environment variables, add api-key to your environment variables")
         return os.environ.get('API_KEY')
 
     # function for collecting data for from the API
 
     def fetch_data(self, newssource):
 
-        api_key = self.add_api_key()
+        api_key = self.get_api_key()
 
         url = 'https://newsapi.org/v2/top-headlines?sources='+newssource + \
             '&apiKey='+api_key+'&pageSize=10'
-        return requests.get(url)
+
+        return (requests.get(url))
     # function for checking whether the api call was successfull
 
     def check_status_code(self):
@@ -51,26 +57,44 @@ class NewsApi:
     # function for storing the response for manipulation
 
     def store_api_response(self):
-        api_response = self.fetch_data(self.get_user_source())
-        response_data = api_response.json()
-        headlineArticles = response_data['articles']
+        selectedSource = self.get_user_source()
+        api_response = (self.fetch_data(selectedSource)).json()
 
-        return headlineArticles
+        headlineArticles = api_response['articles']
 
-    def sort_and_display_results(self):
+        return headlineArticles, selectedSource
+
+    def display_results(self):
+
         content = self.store_api_response()
         article_count = 1
-        print('articles length', len(content))
-        print("\t", '{:=^100}'.format('.'))
-        print("\t", '{: ^100}'.format('Top 10 Headlines from '))
-        print("\t", '{:=^100}'.format('.'))
-        for article in content:
-            print("\t", '{:_^100}'.format(article_count))
-            print("\t", "TITLE : ", "\t", article['title'])
-            print("\t", "DESCRIPTION: ",  "\t", textwrap.fill(
-                article['description'], width=100))
+        source_selected = content[1]
 
-            print("\t", "URL : ",  "\t", textwrap.fill(
-                article['url'], width=100))
+        print('Headlines retrieved : ', len(content[0]))
+        print('{:=^110}'.format('.'))
+        print('{: ^70}{}'.format('TOP 10 HEADLINES FROM  ', source_selected))
+        print('{:=^110}'.format('.'))
+        tab = tt.Texttable()
+        tab.set_cols_width([20, 85])
+        tab.set_cols_align(["l", "l"])
+        for article in content[0]:
+            row = ["Headline Count ", article_count]
+            tab.add_row(row)
+            row = ["TITLE : ",  article['title']]
+            tab.add_row(row)
+            row = ["DESCRIPTION: ",  article['description']]
+            tab.add_row(row)
+            row = ["URL: ",  article['url']]
+            tab.add_row(row)
+            row = ["",  ""]
+            tab.add_row(row)
             article_count += 1
+
+        s = tab.draw()
+        print(s)
         return len(content)
+
+
+if __name__ == '__main__':
+    test = NewsApi()
+    test.display_results()
