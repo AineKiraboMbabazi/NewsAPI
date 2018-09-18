@@ -1,4 +1,5 @@
 import unittest
+
 from apicode.newapi import NewsApi
 
 
