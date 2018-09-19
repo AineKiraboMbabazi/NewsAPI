@@ -68,15 +68,16 @@ class NewsApi:
         modifier = "="*110
         numberofitems = str(len(content[0]))
         title = "TOP 10 HEADLINES FROM : "
-        #creating the header for the display table.
-        print('%s %s \n %s \n \t\t\t %s %s \n %s' % ('Headlines retrieved : ',
-                                                     numberofitems, modifier, title, source_selected, modifier))
-        #creating and styling the table
+        # creating the header for the display table.
+        print('{} {} \n {} \n \t\t\t {} {} \n {}' .format('Headlines retrieved : ',
+                                                          numberofitems, modifier, title, source_selected, modifier))
+
+        # creating and styling the table
         tab = tt.Texttable()
         tab.set_cols_width([20, 85])
         tab.set_cols_align(["l", "l"])
         for article in content[0]:
-            #populating the display table
+            # populating the display table
             row = ["Headline Count ", article_count]
             tab.add_row(row)
             row = ["TITLE : ",  article['title']]
