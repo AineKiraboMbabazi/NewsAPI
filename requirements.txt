@@ -1,0 +1,4 @@
+inquirer==2.4.0
+requests==2.19.1
+texttable==1.4.0
+

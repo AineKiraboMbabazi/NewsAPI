@@ -1,6 +1,5 @@
 import requests
 import inquirer
-import textwrap
 import os
 import texttable as tt
 from inquirer.themes import GreenPassion
@@ -26,13 +25,10 @@ class NewsApi:
     # function to retrieve a product key for the environment variable
 
     def get_api_key(self):
-        try:
-            os.environ.get('API_KEY')
-        except Exception:
-
-            if 'API_KEY' not in os.environ:
-                print(
-                    "Access Denied ..., you dont have a key in your environment variables, add api-key to your environment variables")
+        os.environ.get('API_KEY')
+        if 'API_KEY' not in os.environ:
+            raise ValueError(
+                "Access Denied ..., you dont have a key in your environment variables, add api-key to your environment variables")
         return os.environ.get('API_KEY')
 
     # function for collecting data for from the API
@@ -68,16 +64,19 @@ class NewsApi:
 
         content = self.store_api_response()
         article_count = 1
-        source_selected = content[1]
-
-        print('Headlines retrieved : ', len(content[0]))
-        print('{:=^110}'.format('.'))
-        print('{: ^70}{}'.format('TOP 10 HEADLINES FROM  ', source_selected))
-        print('{:=^110}'.format('.'))
+        source_selected = str(content[1])
+        modifier = "="*110
+        numberofitems = str(len(content[0]))
+        title = "TOP 10 HEADLINES FROM : "
+        #creating the header for the display table.
+        print('%s %s \n %s \n \t\t\t %s %s \n %s' % ('Headlines retrieved : ',
+                                                     numberofitems, modifier, title, source_selected, modifier))
+        #creating and styling the table
         tab = tt.Texttable()
         tab.set_cols_width([20, 85])
         tab.set_cols_align(["l", "l"])
         for article in content[0]:
+            #populating the display table
             row = ["Headline Count ", article_count]
             tab.add_row(row)
             row = ["TITLE : ",  article['title']]
