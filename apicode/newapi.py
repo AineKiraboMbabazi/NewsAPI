@@ -6,8 +6,9 @@ from inquirer.themes import GreenPassion
 
 
 class NewsApi:
-    # function for picking the news source from the user
+
     def get_user_source(self):
+        """"function for picking the news source from the user"""
         questions = [
             inquirer.List('sources',
                           message="From which news source would you like to acquire your headlines?",
@@ -17,23 +18,22 @@ class NewsApi:
 
 
         ]
-        # theme adds a green background to the items in the list
+        """theme adds a green background to the items in the list"""
         answers = inquirer.prompt(questions, theme=GreenPassion())
         print("News Source : ", answers['sources'])
 
         return answers['sources']
-    # function to retrieve a product key for the environment variable
 
     def get_api_key(self):
+        """function to retrieve a product key for the environment variable"""
         os.environ.get('API_KEY')
         if 'API_KEY' not in os.environ:
             raise ValueError(
                 "Access Denied ..., you dont have a key in your environment variables, add api-key to your environment variables")
         return os.environ.get('API_KEY')
 
-    # function for collecting data for from the API
-
     def fetch_data(self, newssource):
+        """function for collecting data for from the API"""
 
         api_key = self.get_api_key()
 
@@ -41,9 +41,9 @@ class NewsApi:
             '&apiKey='+api_key+'&pageSize=10'
 
         return (requests.get(url))
-    # function for checking whether the api call was successfull
 
     def check_status_code(self):
+        """function for checking whether the api call was successfull"""
         api_response = self.fetch_data(self.get_user_source())
         print("Status code:", api_response.status_code)
         if api_response.status_code == 200:
@@ -53,6 +53,7 @@ class NewsApi:
     # function for storing the response for manipulation
 
     def store_api_response(self):
+        """Function for storing the response data in json format"""
         selectedSource = self.get_user_source()
         api_response = (self.fetch_data(selectedSource)).json()
 
@@ -61,6 +62,7 @@ class NewsApi:
         return headlineArticles, selectedSource
 
     def display_results(self):
+        """Function for diaplaying data to the user"""
 
         content = self.store_api_response()
         article_count = 1
@@ -72,7 +74,7 @@ class NewsApi:
         print('{} {} \n {} \n \t\t\t {} {} \n {}' .format('Headlines retrieved : ',
                                                           numberofitems, modifier, title, source_selected, modifier))
 
-        # creating and styling the table
+        """creating and styling the table"""
         tab = tt.Texttable()
         tab.set_cols_width([20, 85])
         tab.set_cols_align(["l", "l"])
