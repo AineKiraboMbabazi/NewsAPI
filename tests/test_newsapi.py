@@ -33,7 +33,8 @@ class NewsApiTest(unittest.TestCase):
         self.assertLessEqual(
             self.headline_request.display_results(), 10)
 
-    def test_Api_key_was_successfully_collected(self):
+    @patch('app.app_Api.NewsApi.get_api_key', return_value='c4cddefacee34761b2312384fcefb0be')
+    def test_Api_key_was_successfully_collected(self, get_api_key):
         self.assertEqual(self.headline_request.get_api_key(),
                          'c4cddefacee34761b2312384fcefb0be')
 
