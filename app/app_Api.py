@@ -101,9 +101,3 @@ class NewsApi:
         s = tab.draw()
         print(s)
         return len(content)
-
-
-if __name__ == '__main__':
-    test = NewsApi()
-    test.get_user_source()
-    test.display_results()

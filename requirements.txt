@@ -1,6 +1,14 @@
-autopep8==1.4
-inquirer==2.4.0
+
+coverage==4.0.3
+
+PyInquirer==1.0.2
 pylint==2.1.1
 pytest==3.8.0
+pytest-cov==2.6.0
+
+python-coveralls==2.9.1
+
 requests==2.19.1
+
 texttable==1.4.0
+travis==0.0.3

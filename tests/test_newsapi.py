@@ -34,7 +34,7 @@ class NewsApiTest(unittest.TestCase):
         self.assertLessEqual(
             self.headline_request.display_results(), 10)
 
-    def test_Api_key_was_successfully_collected(self):
+    def test_api_key_was_successfully_collected(self):
         self.assertEqual(self.headline_request.get_api_key(),
                          os.environ.get('API_KEY'))
 
