@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/AineKiraboMbabazi/NewsAPI.svg?branch=NewsAPI)](https://travis-ci.org/AineKiraboMbabazi/NewsAPI)
-[![Coverage Status](https://coveralls.io/repos/github/AineKiraboMbabazi/NewsAPI/badge.svg?branch=NewsAPI)](https://coveralls.io/github/AineKiraboMbabazi/NewsAPI?branch=NewsAPI)
+[![Coverage Status](https://coveralls.io/repos/github/AineKiraboMbabazi/NewsAPI/badge.svg?branch=master)](https://coveralls.io/github/AineKiraboMbabazi/NewsAPI?branch=master)
 # NewsAPI
 User is offered a list of four news sources. User should be able to make a choice of a preferred news source. User gets back a list of the top 10 headlines from the preferred source. A news headline should have a title, description and a url in case the user needs to follow up on the news story.
 
